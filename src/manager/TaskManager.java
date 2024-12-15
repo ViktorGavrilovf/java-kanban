@@ -1,3 +1,10 @@
+package manager;
+
+import model.Epic;
+import model.Subtask;
+import model.Task;
+import model.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +34,7 @@ public class TaskManager {
 
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
-            epic.addSubtasksID(subtask.getId());
+            epic.addSubtasksId(subtask.getId());
             updateEpicStatus(epic);
         }
         return subtask;
@@ -68,7 +75,7 @@ public class TaskManager {
     public void deleteAllSubtasks() {
         subtasks.clear();
         for (Epic epic : epics.values()) {
-            epic.clearSubtasksID();
+            epic.clearSubtasksId();
             updateEpicStatus(epic);
         }
     }
@@ -77,7 +84,7 @@ public class TaskManager {
         boolean allDone = true;
         boolean allNew = true;
 
-        for (int subtaskID : epic.getSubtasksID()) {
+        for (int subtaskID : epic.getSubtasksId()) {
             Subtask subtask = subtasks.get(subtaskID);
             if (subtask.getStatus() != TaskStatus.DONE) {
                 allDone = false;

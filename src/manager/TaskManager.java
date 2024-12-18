@@ -16,20 +16,24 @@ public class TaskManager {
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private int idCounter = 0;
 
+    private int generateId() {
+        return ++idCounter;
+    }
+
     public Task createTask(Task task) {
-        task.setId(idCounter++);
+        task.setId(generateId());
         tasks.put(task.getId(), task);
         return task;
     }
 
     public Epic createEpic(Epic epic) {
-        epic.setId(idCounter++);
+        epic.setId(generateId());
         epics.put(epic.getId(), epic);
         return epic;
     }
 
     public Subtask createSubtask(Subtask subtask) {
-        subtask.setId(idCounter++);
+        subtask.setId(generateId());
         subtasks.put(subtask.getId(), subtask);
 
         Epic epic = epics.get(subtask.getEpicId());

@@ -73,6 +73,7 @@ public class TaskManager {
     }
 
     public void deleteAllEpics() {
+        deleteAllSubtasks();
         epics.clear();
     }
 
@@ -88,8 +89,8 @@ public class TaskManager {
         boolean allDone = true;
         boolean allNew = true;
 
-        for (int subtaskID : epic.getSubtasksId()) {
-            Subtask subtask = subtasks.get(subtaskID);
+        for (int subtaskId : epic.getSubtasksId()) {
+            Subtask subtask = subtasks.get(subtaskId);
             if (subtask.getStatus() != TaskStatus.DONE) {
                 allDone = false;
             }

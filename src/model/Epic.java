@@ -16,7 +16,9 @@ public class Epic extends Task {
     }
 
     public void addSubtasksId(int subtaskId) {
-        subtasksId.add(subtaskId);
+        if (subtaskId != this.getId()) {        // Проверяем, что ID подзадачи не совпадает с ID эпика
+            subtasksId.add(subtaskId);
+        }
     }
 
     public void clearSubtasksId() {

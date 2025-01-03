@@ -1,4 +1,4 @@
-import manager.TaskManager;
+import manager.InMemoryTaskManager;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -6,7 +6,7 @@ import model.TaskStatus;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
         // Создание двух задач
         Task task1 = manager.createTask(new Task("Задача 1", "Описание задачи 1"));
@@ -21,45 +21,45 @@ public class Main {
         Epic epic2 = manager.createEpic(new Epic("Эпик 2", "Эпик с одной подзадачей"));
         Subtask subtask3 = manager.createSubtask(new Subtask("Подзадача 2-1", "Описание 2-1", epic2.getId()));
 
-        // Печать всех задач, эпиков и подзадач
-        System.out.println("Список всех задач:");
-        System.out.println(manager.getAllTasks());
+        System.out.println("Вызов getTask:");
+        manager.getTask(task1.getId());
+        manager.getTask(task2.getId());
+        printAllTasks(manager);
 
-        System.out.println("Список всех эпиков:");
-        System.out.println(manager.getAllEpics());
+        System.out.println("Вызов getEpic:");
+        manager.getEpic(epic1.getId());
+        printAllTasks(manager);
 
-        System.out.println("Список всех подзадач:");
-        System.out.println(manager.getAllSubtasks());
+        System.out.println("Вызов getSubtask:");
+        manager.getSubtask(subtask1.getId());
+        manager.getSubtask(subtask2.getId());
+        manager.getSubtask(subtask3.getId());
+        printAllTasks(manager);
 
-        // Изменение статусов задач и подзадач
-        task1.setStatus(TaskStatus.DONE);
-        subtask1.setStatus(TaskStatus.DONE);
-        subtask2.setStatus(TaskStatus.IN_PROGRESS);
-        subtask3.setStatus(TaskStatus.DONE);
+        System.out.println("Вызов getEpic для второго эпика:");
+        manager.getEpic(epic2.getId());
+        printAllTasks(manager);
+    }
 
-        // Обновление объектов в менеджере
-        manager.createTask(task1);
-        manager.createSubtask(subtask1);
-        manager.createSubtask(subtask2);
-        manager.createSubtask(subtask3);
+    private static void printAllTasks(InMemoryTaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getAllTasks()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getAllEpics()) {
+            System.out.println(epic);
 
-        // Печать обновлённых задач и эпиков
-        System.out.println("Обновлённый статус задач:");
-        System.out.println(manager.getAllTasks());
+            for (Subtask subtask : manager.getAllSubtasks()) {
+                if (subtask.getEpicId() == epic.getId()) {
+                    System.out.println("--> " + subtask);
+                }
+            }
+        }
 
-        System.out.println("Обновлённый статус эпиков:");
-        System.out.println(manager.getAllEpics());
-
-        // Удаление одной задачи и одного эпика
-        System.out.println("Удаляем задачу с ID = 1 и эпик с ID = 2");
-        manager.deleteAllTasks(); // Удаление всех задач
-        manager.deleteAllEpics(); // Удаление всех эпиков
-
-        // Печать оставшихся задач и эпиков
-        System.out.println("Список задач после удаления:");
-        System.out.println(manager.getAllTasks());
-
-        System.out.println("Список эпиков после удаления:");
-        System.out.println(manager.getAllEpics());
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
     }
 }

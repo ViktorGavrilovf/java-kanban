@@ -14,8 +14,12 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
-    private final List<Task> history = new ArrayList<>(); // Список для хранения истории просмотров
+    private final HistoryManager historyManager; // Список для хранения истории просмотров
     private int idCounter = 0;
+
+    public InMemoryTaskManager() {
+        this.historyManager = Managers.getDefaultHistory();
+    }
 
     private int generateId() {
         return ++idCounter;
@@ -66,21 +70,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {
         Task task = tasks.get(id);
-        addHistory(task);
+        historyManager.addHistory(task);
         return task;
     }
 
     @Override
     public Subtask getSubtask(int id) {
         Subtask subtask = subtasks.get(id);
-        addHistory(subtask);
+        historyManager.addHistory(subtask);
         return subtask;
     }
 
     @Override
     public Epic getEpic(int id) {
         Epic epic = epics.get(id);
-        addHistory(epic);
+        historyManager.addHistory(epic);
         return epic;
     }
 
@@ -126,15 +130,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private void addHistory(Task task) { // Метод для проверки и добавления задачи в историю
-        if (history.size() == 10) {
-            history.remove(0);
-        }
-        history.add(task);
-    }
+
 
     @Override
     public List<Task> getHistory() { // Возвращаем историю просмотра
-        return history;
+        return historyManager.getHistory();
     }
 }

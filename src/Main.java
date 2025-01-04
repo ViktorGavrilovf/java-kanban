@@ -51,7 +51,7 @@ public class Main {
 
             for (Subtask subtask : manager.getAllSubtasks()) {
                 if (subtask.getEpicId() == epic.getId()) {
-                    System.out.println("---> " + subtask);
+                    System.out.println("--> " + subtask);
                 }
             }
         }

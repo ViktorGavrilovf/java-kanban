@@ -8,6 +8,7 @@ import java.util.List;
 public class InMemoryHistoryManager implements HistoryManager {
     private final List<Task> history = new ArrayList<>();
 
+    @Override
     public void addHistory(Task task) { // Метод для проверки и добавления задачи в историю
         if (history.size() == 10) {
             history.remove(0);

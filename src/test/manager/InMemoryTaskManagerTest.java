@@ -1,22 +1,21 @@
 package manager;
 
+import model.Epic;
+import model.Subtask;
 import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
     private TaskManager taskManager;
-    private HistoryManager historyManager;
+
 
     @BeforeEach
     void setup() {
         taskManager = Managers.getDefault();
-        historyManager = Managers.getDefaultHistory();
     }
 
     @Test
@@ -32,13 +31,10 @@ class InMemoryTaskManagerTest {
 
     @Test
     void testTaskUniqueness() {
-        Task task1 = new Task("Задача 1", "Описание задачи 1");
-        Task task2 = new Task("Задача 2", "Описание задачи 2");
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание задачи 1"));
+        Task task2 = taskManager.createTask(new Task("Задача 2", "Описание задачи 2"));
 
-        Task createTask = taskManager.createTask(task1);
-        task2.setId(123);
-
-        assertNotEquals(createTask.getId(), task2.getId(), "ID задач должны быть уникальными.");
+        assertNotEquals(task1.getId(), task2.getId(), "ID задач должны быть уникальными.");
     }
 
     @Test
@@ -54,43 +50,38 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void testAddInHistory() {
-        Task task = new Task("Задача 1", "Описание задачи 1");
-        historyManager.addHistory(task);
-        List<Task> history = historyManager.getHistory();
-        assertNotNull(history, "История не пустая.");
-        assertEquals(1, history.size(), "История не пустая.");
+    void testSubtaskDeletionRemovesOldId() {
+        Epic epic = taskManager.createEpic(new Epic("Эпик", "Описание эпика"));
+        Subtask subtask = taskManager.createSubtask(new Subtask("Подазадача 1", "Описнаие подзадачи 1", epic.getId()));
+        taskManager.deleteTaskById(subtask.getId());
+
+        assertFalse(epic.getSubtasksId().contains(subtask.getId()), "ID удалённой подзадачи не должен оставаться в списке эпика.");
     }
 
     @Test
-    void testHistoryStoresPreviousVersion() {
-        Task task = new Task("Задача 1", "Описание задачи 1");
-        task.setId(1);
-        task.setStatus(TaskStatus.NEW);
+    void testEpicDoesNotContainDeletedSubtaskId() {
+        Epic epic = taskManager.createEpic(new Epic("Эпик", "Описание эпика"));
+        Subtask subtask1 = taskManager.createSubtask(new Subtask("Подазадача 1", "Описнаие подзадачи 1", epic.getId()));
+        Subtask subtask2 = taskManager.createSubtask(new Subtask("Подазадача 1", "Описнаие подзадачи 1", epic.getId()));
 
-        historyManager.addHistory(task);
+        assertEquals(2, epic.getSubtasksId().size());
 
-        // Меняем данные задачи после внесения в историю
-        task.setTitle("Задача 2");
-        task.setDescription("Описание задачи 2");
-        task.setStatus(TaskStatus.DONE);
-        task.setId(12);
+        taskManager.deleteTaskById(subtask1.getId());
 
-        List<Task> history = historyManager.getHistory();
-
-        assertEquals(task, history.get(0), "Данные задачи в истории должны оставаться неизменным.");
+        assertFalse(epic.getSubtasksId().contains(subtask1.getId()), "Эпик не должен содержать ID удалённой подзадачи");
+        assertEquals(1, epic.getSubtasksId().size(), "После удаления должна остаться только одна подзадача");
+        assertTrue(epic.getSubtasksId().contains(subtask2.getId()), "Эпик должен содержать ID второй подзадачи.");
     }
 
     @Test
-    void testReplaceLastTaskInHistory() { // Тест удаления старой задачи в истории при превышении размера списка
-        for (int i = 0; i < 10; i++) {
-            historyManager.addHistory(new Task("Задача " + i, "Описание задачи " + i));
-        }
-        Task task = new Task("Задача 15", "Описание задачи 15");
-        historyManager.addHistory(task);
-        List<Task> history = historyManager.getHistory();
+    void testIdCannotBeChanged() {
+        Task task = new Task("Task", "Description");
+        Task createdTask = taskManager.createTask(task);
 
-        assertEquals(task.getTitle(), history.get(9).getTitle(), "Задачи не равны");
-        assertFalse(history.size() > 10, "Размер истории больше 10 элементов");
+        int originalId = createdTask.getId();
+
+        Task foundTask = taskManager.getTask(task.getId());
+        assertNotNull(foundTask, "Задача должна быть доступна по старому ID");
+        assertEquals(originalId, foundTask.getId(), "ID задачи не должно изменяться");
     }
 }

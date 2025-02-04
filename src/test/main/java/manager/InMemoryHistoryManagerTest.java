@@ -1,5 +1,8 @@
 package manager;
 
+import manager.HistoryManager;
+import manager.Managers;
+import manager.TaskManager;
 import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 public class InMemoryHistoryManagerTest {
 
     private HistoryManager historyManager;

@@ -13,14 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class InMemoryHistoryManagerTest {
 
     private HistoryManager historyManager;
-    private TaskManager taskManager;
     private Task task1;
     private Task task2;
     private Task task3;
 
     @BeforeEach
     void setup() {
-        taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
 
         task1 = taskManager.createTask(new Task("Задача 1", "Описание задачи 1"));

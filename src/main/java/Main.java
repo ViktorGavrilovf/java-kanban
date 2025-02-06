@@ -8,17 +8,17 @@ public class Main {
         InMemoryTaskManager manager = new InMemoryTaskManager();
 
         // Создание двух задач
-        Task task1 = manager.createTask(new Task("Задача 1", "Описание задачи 1"));
-        Task task2 = manager.createTask(new Task("Задача 2", "Описание задачи 2"));
+        Task task1 = manager.createTask("Задача 1", "Описание задачи 1");
+        Task task2 = manager.createTask("Задача 2", "Описание задачи 2");
 
         // Создание эпика с двумя подзадачами
-        Epic epic1 = manager.createEpic(new Epic("Эпик 1", "Эпик с двумя подзадачами"));
-        Subtask subtask1 = manager.createSubtask(new Subtask("Подзадача 1-1", "Описание 1-1", epic1.getId()));
-        Subtask subtask2 = manager.createSubtask(new Subtask("Подзадача 1-2", "Описание 1-2", epic1.getId()));
+        Epic epic1 = manager.createEpic("Эпик 1", "Эпик с двумя подзадачами");
+        Subtask subtask1 = manager.createSubtask("Подзадача 1-1", "Описание 1-1", epic1.getId());
+        Subtask subtask2 = manager.createSubtask("Подзадача 1-2", "Описание 1-2", epic1.getId());
 
         // Создание эпика с одной подзадачей
-        Epic epic2 = manager.createEpic(new Epic("Эпик 2", "Эпик с одной подзадачей"));
-        Subtask subtask3 = manager.createSubtask(new Subtask("Подзадача 2-1", "Описание 2-1", epic2.getId()));
+        Epic epic2 = manager.createEpic("Эпик 2", "Эпик с одной подзадачей");
+        Subtask subtask3 = manager.createSubtask("Подзадача 2-1", "Описание 2-1", epic2.getId());
 
         System.out.println("Вызов getTask:");
         manager.getTask(task1.getId());

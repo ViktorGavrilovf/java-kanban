@@ -8,28 +8,15 @@ public class Task {
     protected String description;
     protected TaskStatus status;
 
-    public Task(String title, String description) {
+    public Task(int id, String title, String description) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.status = TaskStatus.NEW;
     }
 
-    public Task(int id, String title, String description, TaskStatus status) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        if (this.id != 0) {
-            throw new UnsupportedOperationException("ID задачи нельзя изменить после создания");
-        }
-        this.id = id;
     }
 
     public String getTitle() {
@@ -61,7 +48,10 @@ public class Task {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Task task = (Task) obj;
-        return Objects.equals(id, task.id);
+        return Objects.equals(id, task.id) &&
+                Objects.equals(title, task.title) &&
+                Objects.equals(description, task.description) &&
+                status == task.status;
     }
 
     @Override

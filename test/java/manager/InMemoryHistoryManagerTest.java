@@ -22,9 +22,9 @@ public class InMemoryHistoryManagerTest {
         TaskManager taskManager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
 
-        task1 = taskManager.createTask(new Task("Задача 1", "Описание задачи 1"));
-        task2 = taskManager.createTask(new Task("Задача 2", "Описание задачи 2"));
-        task3 = taskManager.createTask(new Task("Задача 3", "Описание задачи 3"));
+        task1 = taskManager.createTask("Задача 1", "Описание задачи 1");
+        task2 = taskManager.createTask("Задача 2", "Описание задачи 2");
+        task3 = taskManager.createTask("Задача 3", "Описание задачи 3");
     }
 
     @Test
@@ -75,6 +75,4 @@ public class InMemoryHistoryManagerTest {
         assertEquals(task2, history.get(0));
         assertEquals(task3, history.get(1));
     }
-
-
 }

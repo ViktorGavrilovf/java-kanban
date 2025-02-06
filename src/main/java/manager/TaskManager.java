@@ -7,11 +7,11 @@ import model.Task;
 import java.util.List;
 
 public interface TaskManager {
-    Task createTask(Task task);
+    Task createTask(String title, String description);
 
-    Epic createEpic(Epic epic);
+    Epic createEpic(String title, String description);
 
-    Subtask createSubtask(Subtask subtask);
+    Subtask createSubtask(String title, String description, int epicId);
 
     List<Task> getAllTasks();
 
@@ -26,6 +26,8 @@ public interface TaskManager {
     Epic getEpic(int id);
 
     void deleteTaskById(Integer id);
+
+    void updateTask(Subtask subtask);
 
     void deleteAllTasks();
 

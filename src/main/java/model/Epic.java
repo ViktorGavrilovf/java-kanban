@@ -6,8 +6,8 @@ import java.util.List;
 public class Epic extends Task {
     private final List<Integer> subtasksId;
 
-    public Epic(String title, String description) {
-        super(title, description);
+    public Epic(int id, String title, String description) {
+        super(id, title, description);
         this.subtasksId = new ArrayList<>();
     }
 
@@ -16,7 +16,7 @@ public class Epic extends Task {
     }
 
     public void addSubtasksId(int subtaskId) {
-        if (subtaskId != this.getId()) {        // Проверяем, что ID подзадачи не совпадает с ID эпика
+        if (subtaskId != this.getId()) {
             subtasksId.add(subtaskId);
         }
     }

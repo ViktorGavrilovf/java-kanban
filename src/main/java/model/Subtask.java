@@ -1,8 +1,5 @@
 package model;
 
-import manager.Managers;
-import manager.TaskManager;
-
 public class Subtask extends Task {
     private final int epicId;
 

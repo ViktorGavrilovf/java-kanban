@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -20,14 +21,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic\n");
+            List<Task> taskList = new ArrayList<>();
+            taskList.addAll(getAllTasks());
+            taskList.addAll(getAllEpics());
+            taskList.addAll(getAllSubtasks());
 
-            for (Task task : getAllTasks()) {
-                writer.write(taskToString(task) + "\n");
-            }
-            for (Task task : getAllEpics()) {
-                writer.write(taskToString(task) + "\n");
-            }
-            for (Task task : getAllSubtasks()) {
+            for (Task task : taskList) {
                 writer.write(taskToString(task) + "\n");
             }
         } catch (IOException exception) {

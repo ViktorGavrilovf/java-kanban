@@ -33,7 +33,7 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "model.Epic{" + "id=" + id +
-                ", title" + title +
+                ", title=" + title +
                 ", description='" + description +
                 ", status=" + status +
                 ", subtasksIds=" + subtasksId +

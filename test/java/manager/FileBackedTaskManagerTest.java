@@ -33,9 +33,9 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void saveAndLoadTasksTest() {
-        Task task = manager.createTask("Задача", "Описание");
-        Epic epic = manager.createEpic("Эпик", "Описание эпика");
-        Subtask subtask = manager.createSubtask("Подзадача", "Описание подзадачи", epic.getId());
+        Task task = manager.createTask(new Task(0, "Задача", "Описание"));
+        Epic epic = manager.createEpic(new Epic(0, "Эпик", "Описание эпика"));
+        Subtask subtask = manager.createSubtask(new Subtask(0, "Подзадача", "Описание подзадачи", epic.getId()));
 
         FileBackedTaskManager loadManager = FileBackedTaskManager.loadFromFile(tempFile);
 

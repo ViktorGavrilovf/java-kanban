@@ -17,8 +17,8 @@ class InMemoryTaskManagerTest {
     @BeforeEach
     void setup() {
         taskManager = Managers.getDefault();
-        task1 = taskManager.createTask("Задача 1", "Описание задачи 1");
-        task2 = taskManager.createTask("Задача 2", "Описание задачи 2");
+        task1 = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
+        task2 = taskManager.createTask(new Task(0, "Задача 2", "Описание задачи 2"));
     }
 
     @Test
@@ -38,7 +38,7 @@ class InMemoryTaskManagerTest {
     void testTaskImmutability() {
         task1.setStatus(TaskStatus.NEW);
 
-        Task createTask = taskManager.createTask("Задача 1", "Описание задачи 1");
+        Task createTask = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
 
         assertEquals(task1.getTitle(), createTask.getTitle(), "Название задачи изменилось.");
         assertEquals(task1.getDescription(), createTask.getDescription(), "Описание задачи изменилось.");
@@ -47,8 +47,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     void testSubtaskDeletionRemovesOldId() {
-        Epic epic = taskManager.createEpic("Эпик", "Описание эпика");
-        Subtask subtask = taskManager.createSubtask("Подазадача 1", "Описнаие подзадачи 1", epic.getId());
+        Epic epic = taskManager.createEpic(new Epic(0, "Эпик", "Описание эпика"));
+        Subtask subtask = taskManager.createSubtask(new Subtask(0, "Подазадача 1", "Описнаие подзадачи 1", epic.getId()));
 
         taskManager.deleteTaskById(subtask.getId());
 
@@ -57,9 +57,9 @@ class InMemoryTaskManagerTest {
 
     @Test
     void testEpicDoesNotContainDeletedSubtaskId() {
-        Epic epic = taskManager.createEpic("Эпик", "Описание эпика");
-        Subtask subtask1 = taskManager.createSubtask("Подазадача 1", "Описнаие подзадачи 1", epic.getId());
-        Subtask subtask2 = taskManager.createSubtask("Подазадача 1", "Описнаие подзадачи 1", epic.getId());
+        Epic epic = taskManager.createEpic(new Epic(0, "Эпик", "Описание эпика"));
+        Subtask subtask1 = taskManager.createSubtask(new Subtask(0, "Подазадача 1", "Описнаие подзадачи 1", epic.getId()));
+        Subtask subtask2 = taskManager.createSubtask(new Subtask(0, "Подазадача 1", "Описнаие подзадачи 1", epic.getId()));
 
         assertEquals(2, epic.getSubtasksId().size());
 
@@ -72,7 +72,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void testIdCannotBeChanged() {
-        Task createdTask = taskManager.createTask("Задача 1", "Описание задачи 1");
+        Task createdTask = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
         int originalId = createdTask.getId();
 
         Task foundTask = taskManager.getTask(createdTask.getId());

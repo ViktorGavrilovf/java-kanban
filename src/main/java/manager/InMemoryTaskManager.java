@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
-    private final HistoryManager historyManager = Managers.getDefaultHistory(); // Список для хранения истории просмотров
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int idCounter = 0;
 
     private int generateId() {
@@ -22,28 +22,28 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task createTask(String title, String description) {
+    public Task createTask(Task task) {
         int id = generateId();
-        Task task = new Task(id, title, description);
+        task.setId(id);
         tasks.put(id, task);
         return task;
     }
 
     @Override
-    public Epic createEpic(String title, String description) {
+    public Epic createEpic(Epic epic) {
         int id = generateId();
-        Epic epic = new Epic(id, title, description);
+        epic.setId(id);
         epics.put(id, epic);
         return epic;
     }
 
     @Override
-    public Subtask createSubtask(String title, String description, int epicId) {
+    public Subtask createSubtask(Subtask subtask) {
         int id = generateId();
-        Subtask subtask = new Subtask(id, title, description, epicId);
+        subtask.setId(id);
         subtasks.put(id, subtask);
 
-        Epic epic = epics.get(epicId);
+        Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
             epic.addSubtasksId(subtask.getId());
             updateEpicStatus(epic);

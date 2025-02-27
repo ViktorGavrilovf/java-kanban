@@ -17,12 +17,12 @@ class EpicTest {
     @BeforeEach
     void setup() {
         taskManager = Managers.getDefault();
-        epic = taskManager.createEpic("Эпик", "Описание эпика");
+        epic = taskManager.createEpic(new Epic(0, "Эпик", "Описание эпика"));
     }
 
     @Test
     void testEpicCannotContainItselfAsSubtask() {
-        subtask1 = taskManager.createSubtask("Подзадача 1-1", "Описание 1-1", epic.getId());
+        subtask1 = taskManager.createSubtask(new Subtask(0, "Подзадача 1-1", "Описание 1-1", epic.getId()));
         epic.addSubtasksId(epic.getId());
         assertFalse(epic.getSubtasksId().contains(epic.getId()),
                 "Эпик не должен содержать самого себя как подзадачу.");
@@ -30,8 +30,8 @@ class EpicTest {
 
     @Test
     void testEpicStatusUpdatesWithSubtasks() {
-        subtask1 = taskManager.createSubtask("Подзадача 1", "Описание 1", epic.getId());
-        subtask2 = taskManager.createSubtask("Подзадача 2", "Описание 2", epic.getId());
+        subtask1 = taskManager.createSubtask(new Subtask(0, "Подзадача 1", "Описание 1", epic.getId()));
+        subtask2 = taskManager.createSubtask(new Subtask(0, "Подзадача 2", "Описание 2", epic.getId()));
 
         assertEquals(TaskStatus.NEW, epic.getStatus(), "Эпик должен быть NEW, если все подзадачи NEW.");
 

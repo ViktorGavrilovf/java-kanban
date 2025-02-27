@@ -22,9 +22,9 @@ public class InMemoryHistoryManagerTest {
         TaskManager taskManager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
 
-        task1 = taskManager.createTask("Задача 1", "Описание задачи 1");
-        task2 = taskManager.createTask("Задача 2", "Описание задачи 2");
-        task3 = taskManager.createTask("Задача 3", "Описание задачи 3");
+        task1 = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
+        task2 = taskManager.createTask(new Task(0, "Задача 2", "Описание задачи 2"));
+        task3 = taskManager.createTask(new Task(0, "Задача 3", "Описание задачи 3"));
     }
 
     @Test

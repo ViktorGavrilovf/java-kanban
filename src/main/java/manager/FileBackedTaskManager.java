@@ -35,24 +35,24 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(String title, String description) {
-        Task task = super.createTask(title, description);
+    public Task createTask(Task task) {
+        Task createTask = super.createTask(task);
         save();
-        return task;
+        return createTask;
     }
 
     @Override
-    public Epic createEpic(String title, String description) {
-        Epic epic = super.createEpic(title, description);
+    public Epic createEpic(Epic epic) {
+        Epic createEpic = super.createEpic(epic);
         save();
-        return epic;
+        return createEpic;
     }
 
     @Override
-    public Subtask createSubtask(String title, String description, int epicId) {
-        Subtask subtask = super.createSubtask(title, description, epicId);
+    public Subtask createSubtask(Subtask subtask) {
+        Subtask createSubtask = super.createSubtask(subtask);
         save();
-        return subtask;
+        return createSubtask;
     }
 
     @Override

@@ -14,9 +14,9 @@ public class Main {
 
         // Добавляем задачи, эпики и подзадачи
         Task task1 = manager.createTask(new Task(0, "Купить продукты", "Купить молоко и хлеб"));
-        Epic epic1 = manager.createEpic(new Epic(0,"Сделать ремонт", "Ремонт в ванной"));
+        Epic epic1 = manager.createEpic(new Epic(0, "Сделать ремонт", "Ремонт в ванной"));
         Subtask subtask1 = manager.createSubtask(
-                new Subtask(0,"Покрасить стены", "Выбрать цвет и покрасить", epic1.getId()));
+                new Subtask(0, "Покрасить стены", "Выбрать цвет и покрасить", epic1.getId()));
 
         // Выводим созданные задачи
         System.out.println("Задачи до загрузки из файла:");

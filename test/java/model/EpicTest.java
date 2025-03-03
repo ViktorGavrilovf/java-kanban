@@ -43,6 +43,7 @@ class EpicTest {
                 "Эпик должен быть IN_PROGRESS, если хотя бы одна подзадача IN_PROGRESS.");
 
         subtask2.setStatus(TaskStatus.DONE);
+        subtask1.setStatus(TaskStatus.NEW);
         taskManager.updateTask(subtask2);
         assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus(),
                 "Эпик должен оставаться IN_PROGRESS, если хотя бы одна подзадача не DONE.");
@@ -62,10 +63,12 @@ class EpicTest {
 
     @Test
     void shouldCalculateTimeFromSubtasks() {
-        Subtask subtask1 = taskManager.createSubtask(new Subtask(0, "Задача 1", "Описание 1",
-                LocalDateTime.of(2025, 3, 1, 10, 0), Duration.ofMinutes(60), epic.getId()));
-        Subtask subtask2 = taskManager.createSubtask(new Subtask(0, "Задача 2", "Описание 2",
-                LocalDateTime.of(2025, 3, 1, 12, 0), Duration.ofMinutes(90), epic.getId()));
+        subtask1 = taskManager.createSubtask(new Subtask(0, "Задача 1", "Описание 1",
+                LocalDateTime.of(2025, 3, 1, 10, 0),
+                Duration.ofMinutes(60), epic.getId()));
+        subtask2 = taskManager.createSubtask(new Subtask(0, "Задача 2", "Описание 2",
+                LocalDateTime.of(2025, 3, 1, 12, 0),
+                Duration.ofMinutes(90), epic.getId()));
 
         assertEquals(epic.getStartTime(), subtask1.getStartTime(),
                 "Время старта эпика должно совпадать с самой ранней подзадачей");
@@ -79,13 +82,15 @@ class EpicTest {
 
     @Test
     void shouldUpdateTimeAfterSubtaskDeletion() {
-        Subtask sub1 = taskManager.createSubtask(new Subtask(0, "Задача 1", "Описание 1",
-                LocalDateTime.of(2025, 3, 1, 10, 0), Duration.ofMinutes(60), epic.getId()));
-        Subtask sub2 = taskManager.createSubtask(new Subtask(0, "Задача 2", "Описание 2",
-                LocalDateTime.of(2025, 3, 1, 12, 0), Duration.ofMinutes(90), epic.getId()));
+        subtask1 = taskManager.createSubtask(new Subtask(0, "Задача 1", "Описание 1",
+                LocalDateTime.of(2025, 3, 1, 10, 0),
+                Duration.ofMinutes(60), epic.getId()));
+        subtask2 = taskManager.createSubtask(new Subtask(0, "Задача 2", "Описание 2",
+                LocalDateTime.of(2025, 3, 1, 12, 0),
+                Duration.ofMinutes(90), epic.getId()));
 
         // Удаляем первую подзадачу
-        taskManager.deleteTaskById(sub1.getId());
+        taskManager.deleteTaskById(subtask1.getId());
 
         // Получаем актуальную версию эпика из менеджера
         Epic actualEpic = taskManager.getEpic(epic.getId());
@@ -96,29 +101,5 @@ class EpicTest {
                 "Продолжительность должна обновиться после удаления подзадачи");
         assertEquals(LocalDateTime.of(2025, 3, 1, 13, 30), actualEpic.getEndTime(),
                 "Время окончания должно обновиться после удаления подзадачи");
-    }
-
-
-    @Test
-    void shouldUpdateStatusBasedOnSubtaskStatus() {
-        Subtask sub1 = taskManager.createSubtask(new Subtask(0, "Задача 1", "Описание 1", epic.getId()));
-        Subtask sub2 = taskManager.createSubtask(new Subtask(0, "Задача 2", "Описание 2", epic.getId()));
-
-        assertEquals(TaskStatus.NEW, epic.getStatus(),
-                "Эпик должен быть в статусе NEW, когда все подзадачи NEW");
-
-        sub1.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.updateTask(sub1);
-
-        assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus(),
-                "Эпик должен быть IN_PROGRESS, если хотя бы одна подзадача IN_PROGRESS");
-
-        sub1.setStatus(TaskStatus.DONE);
-        sub2.setStatus(TaskStatus.DONE);
-        taskManager.updateTask(sub1);
-        taskManager.updateTask(sub2);
-
-        assertEquals(TaskStatus.DONE, epic.getStatus(),
-                "Эпик должен быть DONE, когда все подзадачи DONE");
     }
 }

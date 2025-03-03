@@ -8,18 +8,30 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
     private File tempFile;
-    private FileBackedTaskManager manager;
+
+    @Override
+    protected FileBackedTaskManager createTaskManager() {
+        return new FileBackedTaskManager(tempFile);
+    }
 
     @BeforeEach
-    void setup() throws IOException {
-        tempFile = File.createTempFile("taskTest", ".csv");
-        manager = new FileBackedTaskManager(tempFile);
+    void setup() {
+        try {
+            tempFile = File.createTempFile("taskTest", ".csv");
+            super.setup();
+            Files.write(tempFile.toPath(), new ArrayList<>());
+            manager = createTaskManager();
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при создании временного файла", e);
+        }
     }
 
     @Test

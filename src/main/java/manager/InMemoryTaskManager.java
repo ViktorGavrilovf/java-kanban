@@ -205,7 +205,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     protected boolean intersectionTimeTask(Task newTask) {
-        return getPrioritizedTasks().stream().filter(task -> !task.equals(newTask))
+        return getPrioritizedTasks().stream()
+                .filter(task -> !task.equals(newTask))
+                .filter(task -> task.getStartTime() != null && task.getDuration() != null)
+                .filter(task -> newTask.getStartTime() != null && newTask.getDuration() != null)
                 .anyMatch(task -> task.getStartTime().isBefore(newTask.getEndTime()) &&
                         newTask.getStartTime().isBefore(task.getEndTime()));
     }

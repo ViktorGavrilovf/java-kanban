@@ -10,9 +10,8 @@ class SubtaskTest {
     void testSubtaskCannotBeItsOwnEpic() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
 
-        Epic epic = manager.createEpic("Эпик 1", "Эпик с одной подзадачей");
-        Subtask subtask = manager.createSubtask("Подзадача 1-1",
-                "Описание 1-1", epic.getId());
+        Epic epic = manager.createEpic(new Epic(0, "Эпик 1", "Эпик с одной подзадачей"));
+        Subtask subtask = manager.createSubtask(new Subtask(0, "Подзадача 1-1", "Описание 1-1", epic.getId()));
 
         assertNotEquals(subtask.getId(), subtask.getEpicId(),
                 "Подзадача не может быть своим эпиком.");

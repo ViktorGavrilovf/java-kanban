@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryHistoryManagerTest {
 
@@ -22,9 +21,9 @@ public class InMemoryHistoryManagerTest {
         TaskManager taskManager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
 
-        task1 = taskManager.createTask("Задача 1", "Описание задачи 1");
-        task2 = taskManager.createTask("Задача 2", "Описание задачи 2");
-        task3 = taskManager.createTask("Задача 3", "Описание задачи 3");
+        task1 = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
+        task2 = taskManager.createTask(new Task(0, "Задача 2", "Описание задачи 2"));
+        task3 = taskManager.createTask(new Task(0, "Задача 3", "Описание задачи 3"));
     }
 
     @Test
@@ -74,5 +73,31 @@ public class InMemoryHistoryManagerTest {
         assertNotEquals(task1, history.get(0), "Удалённая задача всё ещё присутствует в истории");
         assertEquals(task2, history.get(0));
         assertEquals(task3, history.get(1));
+    }
+
+    @Test
+    void testRemoveFromHistoryStartMiddleEnd() {
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task1.getId());
+        assertEquals(List.of(task2, task3), historyManager.getHistory(), "Ошибка при удалении из начала");
+
+        historyManager.remove(task2.getId());
+        assertEquals(List.of(task3), historyManager.getHistory(), "Ошибка при удалении из середины");
+
+        historyManager.remove(task3.getId());
+        assertTrue(historyManager.getHistory().isEmpty(), "Ошибка при удалении из конца");
+    }
+
+    @Test
+    void testClearHistory() {
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.clearHistory();
+        assertTrue(historyManager.getHistory().isEmpty(), "История должна быть пуста");
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,6 +9,8 @@ public class Task {
     protected String title;
     protected String description;
     protected TaskStatus status;
+    protected LocalDateTime startTime;
+    protected Duration duration;
 
     public Task(int id, String title, String description) {
         this.id = id;
@@ -15,8 +19,21 @@ public class Task {
         this.status = TaskStatus.NEW;
     }
 
+    public Task(int id, String title, String description, LocalDateTime startTime, Duration duration) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = TaskStatus.NEW;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -43,8 +60,28 @@ public class Task {
         this.status = status;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
     public TaskType getType() {
         return TaskType.TASK;
+    }
+
+    public LocalDateTime getEndTime() {
+        return (startTime != null && duration != null) ? startTime.plus(duration) : null;
     }
 
     @Override
@@ -55,12 +92,14 @@ public class Task {
         return Objects.equals(id, task.id) &&
                 Objects.equals(title, task.title) &&
                 Objects.equals(description, task.description) &&
-                status == task.status;
+                status == task.status &&
+                Objects.equals(duration, task.duration) &&
+                Objects.equals(startTime, task.startTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title, description, status, duration, startTime);
     }
 
     @Override
@@ -68,6 +107,8 @@ public class Task {
         return "model.Task{" + "id=" + id + ", title=" + title +
                 ", description=" + description +
                 ", status=" + status +
+                ", startTime=" + (startTime != null ? startTime.toString() : "не задано") +
+                ", duration=" + (duration != null ? duration.toMinutes() + " минуты" : "не задано") +
                 '}';
     }
 }

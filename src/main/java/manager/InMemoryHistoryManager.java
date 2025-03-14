@@ -77,4 +77,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         return history;
     }
+
+    @Override
+    public void clearHistory() {
+        historyMap.clear();
+        head = null;
+        tail = null;
+    }
 }

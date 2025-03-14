@@ -14,7 +14,7 @@ class TaskTest {
     @BeforeEach
     void setup() {
         taskManager = Managers.getDefault();
-        task = taskManager.createTask("Задача 1", "Описание задачи 1");
+        task = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
     }
 
     @Test
@@ -25,16 +25,16 @@ class TaskTest {
 
     @Test
     void testChangeTaskStatus() {
-        task = taskManager.createTask("Задача 1", "Описание задачи 1");
+        task = taskManager.createTask(new Task(0, "Задача 1", "Описание задачи 1"));
         task.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.createTask(task.getTitle(), task.getDescription());
+        taskManager.createTask(new Task(task.getId(), task.getTitle(), task.getDescription()));
 
         Task updatedTask = taskManager.getTask(task.getId());
         assertEquals(TaskStatus.IN_PROGRESS, updatedTask.getStatus(),
                 "Статус задачи должен измениться на IN_PROGRESS.");
 
         task.setStatus(TaskStatus.DONE);
-        taskManager.createTask(task.getTitle(), task.getDescription());
+        taskManager.createTask(new Task(task.getId(), task.getTitle(), task.getDescription()));
 
         updatedTask = taskManager.getTask(task.getId());
         assertEquals(TaskStatus.DONE, updatedTask.getStatus(), "Статус задачи должен измениться на DONE.");

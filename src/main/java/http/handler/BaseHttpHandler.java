@@ -3,10 +3,8 @@ package http.handler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
-
 import http.adapter.DurationAdapter;
 import http.adapter.LocalDateTimeAdapter;
-
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,9 +12,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class BaseHttpHandler {
-    protected static final Gson gson = new GsonBuilder()
+    public static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .setPrettyPrinting()
             .serializeNulls().create();
 
     protected void sendText(HttpExchange exchange, String text, int codeStatus) throws IOException {
@@ -40,6 +39,8 @@ public class BaseHttpHandler {
     }
 
     protected void sendServerError(HttpExchange exchange, String message) throws IOException {
+        System.err.println("Ошибка сервера: " + message);
+        new Exception().printStackTrace();
         sendText(exchange, message, 500);
     }
 }

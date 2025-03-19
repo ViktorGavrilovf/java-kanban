@@ -72,7 +72,6 @@ public class EpicsHandler extends BaseTaskHandler<Epic> {
             sendNotFound(exchange);
         } catch (Exception e) {
             sendServerError(exchange, "Ошибка удаления эпиков: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -93,6 +92,6 @@ public class EpicsHandler extends BaseTaskHandler<Epic> {
 
     @Override
     protected void deleteAllTasks() {
-        manager.deleteAllEpics();;
+        manager.deleteAllEpics();
     }
 }

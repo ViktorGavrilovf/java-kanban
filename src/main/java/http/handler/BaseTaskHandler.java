@@ -122,8 +122,12 @@ public abstract class BaseTaskHandler<T extends Task> extends BaseHttpHandler im
     }
 
     protected abstract String getBasePath();
+
     protected abstract List<T> getAllTasks();
+
     protected abstract T getTaskById(int id);
+
     protected abstract void createTask(T task);
+
     protected abstract void deleteAllTasks();
 }

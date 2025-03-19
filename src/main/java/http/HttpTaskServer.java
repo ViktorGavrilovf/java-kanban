@@ -2,7 +2,7 @@ package http;
 
 import com.sun.net.httpserver.HttpServer;
 import http.handler.*;
-import manager.Managers;
+import manager.InMemoryTaskManager;
 import manager.TaskManager;
 
 import java.io.IOException;
@@ -11,10 +11,8 @@ import java.net.InetSocketAddress;
 public class HttpTaskServer {
     private static final int PORT = 8080;
     private final HttpServer server;
-    private final TaskManager manager;
 
-    public HttpTaskServer() throws IOException {
-        this.manager = Managers.getDefault();
+    public HttpTaskServer(TaskManager manager) throws IOException {
         this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         server.createContext("/tasks", new TasksHandler(manager));
@@ -35,7 +33,8 @@ public class HttpTaskServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpTaskServer server = new HttpTaskServer();
+        TaskManager manager = new InMemoryTaskManager();
+        HttpTaskServer server = new HttpTaskServer(manager);
         server.start();
     }
 }

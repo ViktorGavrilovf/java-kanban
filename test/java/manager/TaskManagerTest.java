@@ -139,4 +139,16 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(manager.getPrioritizedTasks(), List.of(task2, task1, task3),
                 "Задачи должны быть в порядке возрастания startTime");
     }
+
+    @Test
+    void comparisonOfTasksById() {
+        task1 = manager.createTask(new Task(0, "Задача 2 ", "Описание подзадачи",
+                LocalDateTime.of(2025, 3, 15, 14, 15), Duration.ZERO));
+        task2 = manager.createTask(new Task(0, "Задача 1", "Описание подзадачи",
+                LocalDateTime.of(2025, 3, 15, 14, 15), Duration.ZERO));
+        Task task3 = manager.createTask(new Task(0, "Задача 3", "Описание подзадачи",
+                LocalDateTime.of(2025, 3, 15, 14, 15), Duration.ZERO));
+        assertEquals(manager.getPrioritizedTasks(), List.of(task1, task2, task3),
+                "Задачи должны быть в порядке возрастания ID");
+    }
 }

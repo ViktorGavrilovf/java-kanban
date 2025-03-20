@@ -27,7 +27,7 @@ public interface TaskManager {
 
     void deleteTaskById(Integer id);
 
-    void updateTask(Subtask subtask);
+    void updateTask(Task task);
 
     void deleteAllTasks();
 

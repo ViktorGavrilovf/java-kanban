@@ -54,7 +54,7 @@ public abstract class BaseTaskHandler<T extends Task> extends BaseHttpHandler im
                     sendNotFound(exchange);
                 }
             } catch (NumberFormatException e) {
-                sendNotFound(exchange);
+                sendNotFound(exchange); // Да, в ТЗ 400 не описывается, только 404 и 406
             }
         }
     }
@@ -77,7 +77,7 @@ public abstract class BaseTaskHandler<T extends Task> extends BaseHttpHandler im
 
             if (task.getId() > 0) {
                 manager.updateTask(task);
-                exchange.sendResponseHeaders(200, 0);
+                exchange.sendResponseHeaders(201, 0);
             } else {
                 try {
                     createTask(task);

@@ -120,7 +120,7 @@ public class HttpTasksHandlerTest extends BaseHttpTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Ошибка при обновлении задачи");
+        assertEquals(201, response.statusCode(), "Ошибка при обновлении задачи");
 
         Task updatedTask = manager.getTask(taskId);
         assertNotNull(updatedTask, "Обновлённая задача не найдена");

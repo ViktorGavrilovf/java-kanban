@@ -1,5 +1,6 @@
 package manager;
 
+import exception.ManagerSaveException;
 import model.*;
 
 import java.io.BufferedWriter;
@@ -84,8 +85,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(Subtask subtask) {
-        super.updateTask(subtask);
+    public void updateTask(Task task) {
+        super.updateTask(task);
         save();
     }
 
